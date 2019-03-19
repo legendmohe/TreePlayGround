@@ -1,9 +1,8 @@
 package com.legendmohe;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
+ * 树的基本操作
+ *
  * Created by hexinyu on 2019/3/19.
  */
 abstract class Tree<T extends TreeNode> {

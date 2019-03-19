@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * BST 二叉搜索树实现
+ * <p>
  * Created by hexinyu on 2019/3/19.
  */
 class BinarySearchTree extends Tree<BSTreeNode> {
@@ -61,6 +63,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
 
     ///////////////////////////////////operation///////////////////////////////////
 
+    /*
+    前序遍历
+     */
     protected List<BSTreeNode> preorderWalkInternal(BSTreeNode root, ArrayList<BSTreeNode> treeNodes) {
         if (root == null) {
             return treeNodes;
@@ -75,6 +80,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return treeNodes;
     }
 
+    /*
+    中序遍历
+     */
     protected List<BSTreeNode> inorderWalkInternal(BSTreeNode root, ArrayList<BSTreeNode> treeNodes) {
         if (root == null) {
             return treeNodes;
@@ -89,6 +97,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return treeNodes;
     }
 
+    /*
+    后续遍历
+     */
     protected List<BSTreeNode> postorderWalkInternal(BSTreeNode root, ArrayList<BSTreeNode> treeNodes) {
         if (root == null) {
             return treeNodes;
@@ -103,6 +114,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return treeNodes;
     }
 
+    /*
+    搜索节点
+     */
     private BSTreeNode searchNodeInternal(BSTreeNode root, int value) {
         if (root == null || root.value == value) {
             return root;
@@ -113,6 +127,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         }
     }
 
+    /*
+    查找最小值
+     */
     private BSTreeNode findMinimumInternal(BSTreeNode root) {
         if (root == null || root.left == null) {
             return root;
@@ -120,6 +137,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return findMinimumInternal(root.left);
     }
 
+    /*
+    查找最大值
+     */
     private BSTreeNode findMaximumInternal(BSTreeNode root) {
         if (root == null || root.right == null) {
             return root;
@@ -127,7 +147,13 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return findMaximumInternal(root.right);
     }
 
+    /*
+    查找直接后继
+     */
     private BSTreeNode findSuccessorInternal(BSTreeNode root) {
+        if (root == null) {
+            return null;
+        }
         if (root != null && root.right != null) {
             return findMinimumInternal(root.right);
         }
@@ -139,7 +165,13 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return parent;
     }
 
+    /*
+    查找直接前驱
+     */
     private BSTreeNode findPredecessorInternal(BSTreeNode root) {
+        if (root == null) {
+            return null;
+        }
         if (root != null && root.left != null) {
             return findMaximumInternal(root.left);
         }
@@ -151,6 +183,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         return parent;
     }
 
+    /*
+    插入节点
+     */
     private void insertNodeInternal(BSTreeNode parent, BSTreeNode root, BSTreeNode inserter) {
         if (root == null) {
             // 如果root为空，则表明找到插入点。剩下的工作就是判断插左边还是右边。
@@ -171,6 +206,9 @@ class BinarySearchTree extends Tree<BSTreeNode> {
         }
     }
 
+    /*
+    删除节点
+     */
     private void deleteNodeInternal(BSTreeNode node) {
         if (node == null) {
             return;
@@ -192,13 +230,16 @@ class BinarySearchTree extends Tree<BSTreeNode> {
                 // 注意这里successor肯定没有左子树.
                 deleteNodeInternal(successor);
                 // 然后直接替换
+                deleteAndMoveChildUp(node.parent, node, successor);
                 successor.left = node.left;
                 successor.right = node.right;
-                deleteAndMoveChildUp(node.parent, node, successor);
             }
         }
     }
 
+    /*
+    子节点替换当前节点
+     */
     private void deleteAndMoveChildUp(BSTreeNode newParent, BSTreeNode removal, BSTreeNode child) {
         if (newParent.left == removal) {// node 是 parent的左节点
             newParent.left = child;
